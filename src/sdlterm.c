@@ -163,6 +163,8 @@ static void swap(int *a, int *b);
 /*****************************************************************************/
 
 int damage(VTermRect rect, void *user) {
+	//printf("damage: [%d, %d, %d, %d]\n", rect.start_col,
+//			rect.start_row, rect.end_col, rect.end_row);
 	return 1;
 }
 int moverect(VTermRect dest, VTermRect src, void *user) {
@@ -173,7 +175,8 @@ int movecursor(VTermPos pos, VTermPos oldpos, int visible, void *user) {
 	state->cursor.position.x = pos.col;
 	state->cursor.position.y = pos.row;
 	if(visible == 0) {
-		state->cursor.active = false;
+		// Works great for 'top' but not for 'nano'. Nano should have a cursor!
+		//state->cursor.active = false;
 	} else state->cursor.active = true;
 	return 1;
 }
@@ -197,7 +200,8 @@ int sb_popline(int cols, VTermScreenCell *cells, void *user) {
 VTermScreenCallbacks callbacks = {
 	.movecursor = movecursor,
 	.sb_pushline = sb_pushline,
-	.bell = bell
+	.bell = bell,
+	.damage = damage
 };
 
 int main(int argc, char *argv[]) {
@@ -221,7 +225,7 @@ int main(int argc, char *argv[]) {
 	if(TERM_InitializeTerminal(&state, &cfg)) return -1;
 	while(!TERM_HandleEvents(&state)) {
 		TERM_Update(&state);
-		SDL_Delay(10);
+		SDL_Delay(20);
 	}
 
 	TERM_DeinitializeTerminal(&state);
@@ -357,9 +361,16 @@ int TERM_InitializeTerminal(TERM_State *state, TERM_Config *cfg) {
 		return -1;
 	}
 
+	Uint32 wflags = TERM_GetWindowFlags(cfg);
+	if(wflags & SDL_WINDOW_FULLSCREEN) {
+		/* Override resolution with display fullscreen resolution */
+		SDL_Rect rect;
+		SDL_GetDisplayBounds(0, &rect);
+		cfg->width = rect.w;
+		cfg->height = rect.h;
+	}
 	state->window = SDL_CreateWindow(PROGNAME, SDL_WINDOWPOS_CENTERED,
-						SDL_WINDOWPOS_CENTERED, cfg->width, cfg->height,
-											TERM_GetWindowFlags(cfg));
+				SDL_WINDOWPOS_CENTERED, cfg->width, cfg->height, wflags);
 	if(state->window == NULL) {
 		return -1;
 	}

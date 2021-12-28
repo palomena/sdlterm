@@ -9,3 +9,6 @@ all:
 
 clean:
 	rm -rv ./build
+
+install:
+	sudo cp -v ./build/sdlterm /usr/local/bin
