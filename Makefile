@@ -1,14 +1,16 @@
-INCLUDE_PATHS := -I/usr/include/SDL2 -Ilibvterm-0.2/include
-LIBRARY_PATHS := -Llibvterm-0.2/.libs
-LINK := -lSDL2 -lsdlfox -lvterm -lutil
-CFLAGS := ${INCLUDE_PATHS} ${LIBRARY_PATHS} ${LINK}
+INCLUDE_PATHS := -Ilibvterm-0.3.3/include
+LIBRARY_PATHS := -Llibvterm-0.3.3/.libs
+LINK := -lSDL2 -lSDL2_ttf -lSDL2_image -l:libvterm.a
+CFLAGS := -Wall -pedantic ${INCLUDE_PATHS} ${LIBRARY_PATHS} ${LINK} -O3 -flto
 
 all:
-	mkdir -p ./build
-	cc ./src/*.c -o./build/sdlterm ${CFLAGS}
+	cc ./src/*.c -o./sdlterm ${CFLAGS}
+
+debug:
+	cc ./src/*.c -o./sdlterm ${CFLAGS} -ggdb -fsanitize=address,undefined
 
 clean:
-	rm -rv ./build
+	rm -v sdlterm
 
 install:
-	sudo cp -v ./build/sdlterm /usr/local/bin
+	cp -v ./sdlterm /usr/local/bin

@@ -1,69 +1,42 @@
 # sdlterm
-
 ![SDL logo](data/SDL_logo.png) ![logo](data/terminal_small.png)
 
-### About
+sdlterm is a Terminal Emulator based on [libsdl](http://www.libsdl.org)
+and [libvterm](http://www.leonerd.org.uk/code/libvterm/) for Linux operating
+systems.
+It does not try to be the fastest, slimmest, most amazing terminal emulator
+ever. I just haven't seen a terminal emulator made with SDL yet (probably for
+good reasons), so here is a small little something that fixes that.
 
-SDL2 Terminal Emulator based on [libsdl2](http://www.libsdl.org), [libvterm](http://www.leonerd.org.uk/code/libvterm/) and [SDL_fox](https://github.com/palomena/SDL_fox).  
-Should be compatible with all POSIX compliant systems and probably also win32.
+It has originally been developed as a standalone terminal emulator meaning
+all of the vt100 and xterm behind the scenes stuff had been implemented
+from scratch. Since that turned out to be quite a jump in complexity, I've
+decided to go with libvterm instead, which takes care of the escape sequence
+handling and screen cell management.
 
-![Screenshot](data/screenshot.png)
+## Features
+* Clipboard (Copy+Paste)
+* Visual terminal bell
+* Scrollback buffer
+* Customizable
+    * choose your own cursor
+    * choose your own rendering backend
+    * choose your own pointer
+    * ...
+* Quite hackable
 
-Originally developed as a standalone terminal emulator, meaning all of the
-vt100 and xterm behind the scenes management had been implemented from scratch.
-Turned out ok-ish, but a few edge cases kept failing. Did not want to
-go through 3000+ loc of cryptic csi sequence parsing and vt100 handling. 
-Heard of libvterm and never looked back since. Don't reimplement the wheel.
+## Build
 
-Single source file, less than 1000 loc, kept as simple and minimal as possible.
+The following steps assume a debian-based platform with the aptitude package
+manager.
 
-![Screenshot](data/terminal.png)
-
-### Features
-- Clipboard handling (Copy+Paste)
-- Visual terminal bell
-- Blinking cursor
-- Colors
-- Font zoom on mousewheel/touchpad event
-- Runtime selectable renderer backend (software, opengl, etc)
-- window resize triggers buffer and child process resize
-- Fast, due to SDL_fox prerendered font rendering
-- Easily hackable by playing around with the accessible sourcecode
-- Probably runs on a posix compliant toaster (if SDL supports it)
-
-### Missing features / Future improvements
-- Scrollback buffer
-- Performance
-	- damage triggers full screen redraw, where partial update would be sufficient
-
-### Build
-
-1. Install libsdl2, libsdlfox, make
-2. `git clone [REPOSITORY URL]`
-3. cd ./sdlterm
+1. Install build essentials: `sudo apt install -y build-essentials make libtool-bin`
+2. `sudo apt install -y libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev`
+3. `pushd ./libvterm-0.3.3`
 4. `make`
-5. A *wild* sdlterm application should appear in the ./build directory
+5. `popd`
+6. `make`
+7. The `sdlterm` executable should now appear in the current directory
 
-### License
-
-```
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-```
+Feel free to hack around with the sourcecode if you would like
+to customize sdlterm!
