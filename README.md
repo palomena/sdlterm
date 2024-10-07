@@ -30,7 +30,7 @@ handling and screen cell management.
 The following steps assume a debian-based platform with the aptitude package
 manager.
 
-1. Install build essentials: `sudo apt install -y build-essentials make libtool-bin`
+1. Install build essentials: `sudo apt install -y build-essential make libtool-bin`
 2. `sudo apt install -y libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev`
 3. `pushd ./libvterm-0.3.3`
 4. `make`
