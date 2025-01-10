@@ -8,6 +8,8 @@ It does not try to be the fastest, slimmest, most amazing terminal emulator
 ever. I just haven't seen a terminal emulator made with SDL yet (probably for
 good reasons), so here is a small little something that fixes that.
 
+![sdlterm screenshot](data/screenshot.png)
+
 It has originally been developed as a standalone terminal emulator meaning
 all of the vt100 and xterm behind the scenes stuff had been implemented
 from scratch. Since that turned out to be quite a jump in complexity, I've
